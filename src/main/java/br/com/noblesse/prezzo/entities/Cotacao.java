@@ -28,15 +28,8 @@ public class Cotacao implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "empresa_id")
-    private Empresa empresa;
-
-    @ManyToOne
-    @JoinColumn(name = "produto_id")
-    private Produto produto;
-
+    private String nomeEmpresa;
+    private String nomeProduto;
     private Float preco;
 
 }
