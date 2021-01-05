@@ -17,8 +17,11 @@ public class CotacaoService {
     private CotacaoRepository repository;
     
     public List<Cotacao> cotacoes(Long empresaId){
-    
         return repository.findAllByEmpresaId(empresaId);
+    }
+    
+    public Cotacao update(Cotacao cotacao) {
+        return repository.save(cotacao);
     }
     
 }

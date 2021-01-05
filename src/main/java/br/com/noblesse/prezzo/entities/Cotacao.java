@@ -32,7 +32,6 @@ public class Cotacao implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "empresa_id")
-    @JsonIgnore
     private Empresa empresa;
 
     @ManyToOne
