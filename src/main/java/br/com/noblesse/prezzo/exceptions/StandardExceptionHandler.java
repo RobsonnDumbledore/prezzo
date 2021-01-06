@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,6 +20,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class StandardExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<StandardError> handleEntityNotFound(
+            EntityNotFoundException e,
+            HttpServletRequest request) {
+
+        StandardError standardError = new StandardError(
+                NOT_FOUND.value(),
+                e.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(NOT_FOUND).body(standardError);
+    }
 
     @ExceptionHandler(DuplicateKeyException.class)
     protected ResponseEntity<StandardError> duplicateKeyException(
