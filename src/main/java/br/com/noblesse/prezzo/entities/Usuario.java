@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -21,7 +20,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "usuario")
-@NoArgsConstructor
 @AllArgsConstructor
 public class Usuario implements Serializable {
 
@@ -31,7 +29,7 @@ public class Usuario implements Serializable {
     private String nome;
     private String email;
     private String senha;
-    
+
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
