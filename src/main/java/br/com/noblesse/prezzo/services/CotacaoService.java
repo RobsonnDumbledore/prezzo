@@ -1,5 +1,6 @@
 package br.com.noblesse.prezzo.services;
 
+import br.com.noblesse.prezzo.dto.CotacaoDto;
 import br.com.noblesse.prezzo.dto.PageDto;
 import br.com.noblesse.prezzo.entities.Cotacao;
 import br.com.noblesse.prezzo.repositories.CotacaoRepository;
@@ -20,18 +21,30 @@ public class CotacaoService {
     @Autowired
     private CotacaoRepository repository;
 
-    public PageDto<Cotacao> findAll(Long empresaId, int page, int size) {
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public PageDto<CotacaoDto> findAll(Long empresaId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Cotacao> cotacoes = repository.findAllByEmpresaId(empresaId, pageable);
-        return convertToPageDto(cotacoes);
+        Page<CotacaoDto> cotacoesDto = convertToListDto(cotacoes);
+        return convertToPageDto(cotacoesDto);
     }
 
     public Cotacao update(Cotacao cotacao) {
         return repository.save(cotacao);
     }
 
-    private PageDto<Cotacao> convertToPageDto(Page<Cotacao> cotacoes) {
-        PageDto<Cotacao> pageDto = new PageDto<>();
+    private CotacaoDto convertToDto(Cotacao cotacao) {
+        return modelMapper.map(cotacao, CotacaoDto.class);
+    }
+
+    private Page<CotacaoDto> convertToListDto(Page<Cotacao> cotacoes) {
+        return cotacoes.map(cotacao -> convertToDto(cotacao));
+    }
+
+    private PageDto<CotacaoDto> convertToPageDto(Page<CotacaoDto> cotacoes) {
+        PageDto<CotacaoDto> pageDto = new PageDto<>();
         pageDto.setContent(cotacoes.getContent());
         pageDto.setTotalElements(cotacoes.getTotalElements());
         pageDto.setTotalPages(cotacoes.getTotalPages());

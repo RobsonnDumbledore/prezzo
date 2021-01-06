@@ -1,5 +1,6 @@
 package br.com.noblesse.prezzo.controllers;
 
+import br.com.noblesse.prezzo.dto.CotacaoDto;
 import br.com.noblesse.prezzo.dto.PageDto;
 import br.com.noblesse.prezzo.entities.Cotacao;
 import br.com.noblesse.prezzo.services.CotacaoService;
@@ -23,7 +24,7 @@ public class CotacaoController {
     private CotacaoService service;
 
     @GetMapping
-    public PageDto<Cotacao> cotacoes(@RequestParam Long empresaId,
+    public PageDto<CotacaoDto> cotacoes(@RequestParam Long empresaId,
             @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false, defaultValue = "10") int size) {
         return service.findAll(empresaId, page, size);
