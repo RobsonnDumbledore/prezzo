@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class Cotacao implements Serializable {
     @JoinColumn(name = "produto_id")
     private Produto produto;
     
+    @NotNull(message = "campo obrigatório")
     private Float preco;
 
 }
