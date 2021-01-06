@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   empresa_id bigint NOT NULL,
   PRIMARY KEY (id),
   KEY FK_usuario_empresa (empresa_id),
+  UNIQUE KEY email (email),
   CONSTRAINT FK_usuario_empresa FOREIGN KEY (empresa_id) REFERENCES empresa (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

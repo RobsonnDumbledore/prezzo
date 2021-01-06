@@ -42,6 +42,6 @@ public class StandardError implements Serializable {
 
     public void addValidationErrors(List<FieldError> fieldErrors) {
         fieldErrors.forEach(field -> subErrors.
-                add(new SubError(field.getObjectName(), field.getDefaultMessage())));
+                add(new SubError(field.getField(), field.getDefaultMessage())));
     }
 }
