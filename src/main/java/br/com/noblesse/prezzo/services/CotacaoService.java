@@ -6,6 +6,7 @@ import br.com.noblesse.prezzo.entities.Cotacao;
 import br.com.noblesse.prezzo.repositories.CotacaoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ public class CotacaoService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Cacheable("cotacoes")
     public PageDto<CotacaoDto> findAll(Long empresaId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Cotacao> cotacoes = repository.findAllByEmpresaId(empresaId, pageable);
