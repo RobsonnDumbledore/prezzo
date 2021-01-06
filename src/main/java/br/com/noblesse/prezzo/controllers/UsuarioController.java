@@ -40,7 +40,7 @@ public class UsuarioController {
 
     @PutMapping
     @ResponseStatus(OK)
-    public Usuario update(@RequestBody Usuario usuario) {
+    public Usuario update(@RequestBody @Valid Usuario usuario) {
         return service.update(usuario);
     }
 

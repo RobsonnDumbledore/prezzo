@@ -19,13 +19,12 @@ public class UsuarioService {
     private UsuarioRepository repository;
 
     public Usuario save(Usuario usuario) {
-        if (existsByEmail(usuario.getEmail())) {
-            throw new DuplicateKeyException("email já cadastrado");
-        }
+        existsByEmail(usuario.getEmail());
         return repository.save(usuario);
     }
 
     public Usuario update(Usuario usuario) {
+        existsByEmail(usuario.getEmail());
         return repository.save(usuario);
     }
 
@@ -39,8 +38,10 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
     }
 
-    public Boolean existsByEmail(String email) {
-        return repository.existsByEmail(email);
+    public void existsByEmail(String email) {
+        if (repository.existsByEmail(email)) {
+            throw new DuplicateKeyException("email já cadastrado");
+        }
     }
 
     public void delete(Long id) {
