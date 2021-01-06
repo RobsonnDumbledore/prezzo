@@ -1,9 +1,9 @@
 package br.com.noblesse.prezzo.controllers;
 
+import br.com.noblesse.prezzo.dto.PageDto;
 import br.com.noblesse.prezzo.entities.Cotacao;
 import br.com.noblesse.prezzo.services.CotacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +23,10 @@ public class CotacaoController {
     private CotacaoService service;
 
     @GetMapping
-    public Page<Cotacao> cotacoes(@RequestParam Long empresaId, 
+    public PageDto<Cotacao> cotacoes(@RequestParam Long empresaId,
             @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false, defaultValue = "10") int size) {
-        return service.cotacoes(empresaId, page, size);
+        return service.findAll(empresaId, page, size);
     }
 
     @PutMapping
