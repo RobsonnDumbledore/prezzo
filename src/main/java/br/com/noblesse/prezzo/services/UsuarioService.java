@@ -24,7 +24,6 @@ public class UsuarioService {
     }
 
     public Usuario update(Usuario usuario) {
-        existsByEmail(usuario.getEmail());
         return repository.save(usuario);
     }
 
