@@ -23,7 +23,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "usuario")
-@AllArgsConstructor
 public class Usuario implements Serializable {
 
     @Id
@@ -43,6 +42,13 @@ public class Usuario implements Serializable {
 
     public Usuario() {
     }
+
+    public Usuario(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
+    }
+    
+    
 
     @ManyToOne
     @JoinColumn(name = "empresa_id")

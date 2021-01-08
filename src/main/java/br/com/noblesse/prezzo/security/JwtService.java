@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ public class JwtService {
         LocalDateTime expirationDate = LocalDateTime.now().plusMinutes(expString);
         Instant instant = expirationDate.atZone(ZoneId.systemDefault()).toInstant();
         Date data = Date.from(instant);
+
         return Jwts
                 .builder()
                 .setSubject(usuario.getEmail())

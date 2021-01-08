@@ -5,12 +5,16 @@
  */
 package br.com.noblesse.prezzo.controllers;
 
+import br.com.noblesse.prezzo.dto.CredencialDto;
+import br.com.noblesse.prezzo.dto.TokenDto;
 import br.com.noblesse.prezzo.entities.Usuario;
+import br.com.noblesse.prezzo.security.JwtService;
 import br.com.noblesse.prezzo.services.UsuarioService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +35,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService service;
+
+    @Autowired
+    private JwtService jwtService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -54,6 +61,14 @@ public class UsuarioController {
     @ResponseStatus(OK)
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PostMapping("/auth")
+    public TokenDto authenticate(@RequestBody CredencialDto credenciais) {
+        Usuario usuario = new Usuario(credenciais.getEmail(), credenciais.getSenha());
+        UserDetails user = service.authenticate(usuario);
+        String token = jwtService.generateToken(usuario);
+        return new TokenDto(user.getUsername(), token);
     }
 
 }

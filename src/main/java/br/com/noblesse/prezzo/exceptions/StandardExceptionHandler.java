@@ -6,8 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +22,32 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class StandardExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    protected ResponseEntity<StandardError> usernameNotFoundException(
+            UsernameNotFoundException e,
+            HttpServletRequest request) {
+
+        StandardError standardError = new StandardError(
+                UNAUTHORIZED.value(),
+                "CREDENCIAIS INVÁLIDAS",
+                request.getRequestURI());
+
+        return ResponseEntity.status(UNAUTHORIZED).body(standardError);
+
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    protected ResponseEntity<StandardError> invalidPasswordException(
+            InvalidPasswordException e,
+            HttpServletRequest request) {
+        StandardError standardError = new StandardError(
+                UNAUTHORIZED.value(),
+                e.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(UNAUTHORIZED).body(standardError);
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<StandardError> handleEntityNotFound(
