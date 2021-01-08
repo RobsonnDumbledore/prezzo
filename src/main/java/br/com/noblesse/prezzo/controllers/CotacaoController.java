@@ -27,10 +27,10 @@ public class CotacaoController {
     private CotacaoService service;
 
     @GetMapping
-    public PageDto<CotacaoDto> cotacoes(@RequestParam Long empresaId,
+    public PageDto<CotacaoDto> cotacoes(
             @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false, defaultValue = "10") int size) {
-        return service.findAll(empresaId, page, size);
+        return service.findAll(page, size);
     }
 
     @PutMapping

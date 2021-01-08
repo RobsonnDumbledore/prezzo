@@ -6,7 +6,14 @@ import br.com.noblesse.prezzo.exceptions.EntityNotFoundException;
 import br.com.noblesse.prezzo.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.com.noblesse.prezzo.repositories.UsuarioRepository;
-import org.springframework.security.core.userdetails.User;
+import br.com.noblesse.prezzo.security.CustomUserDetail;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -59,16 +66,17 @@ public class UsuarioService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        
-        
         Usuario usuario = repository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado"));
-        return User
-                .builder()
-                .username(usuario.getEmail())
-                .roles("")
-                .password(usuario.getSenha())
-                .build();
+                .orElseThrow(() -> new UsernameNotFoundException("CREDENCIAIS INVÁLIDAS"));
+
+        List<String> permissoes = new ArrayList<>();
+        return new CustomUserDetail(usuario, usuario.getEmail(), usuario.getSenha(), getPermissoes(permissoes));
+    }
+
+    private Collection<? extends GrantedAuthority> getPermissoes(List<String> permissoes) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        permissoes.forEach(p -> authorities.add(new SimpleGrantedAuthority(p)));
+        return authorities;
     }
 
     public UserDetails authenticate(Usuario usuario) {

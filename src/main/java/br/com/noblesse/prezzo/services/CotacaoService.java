@@ -4,6 +4,7 @@ import br.com.noblesse.prezzo.dto.CotacaoDto;
 import br.com.noblesse.prezzo.dto.PageDto;
 import br.com.noblesse.prezzo.entities.Cotacao;
 import br.com.noblesse.prezzo.repositories.CotacaoRepository;
+import br.com.noblesse.prezzo.utils.ContextUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,9 +27,10 @@ public class CotacaoService {
     private ModelMapper modelMapper;
 
     @Cacheable("cotacoes")
-    public PageDto<CotacaoDto> findAll(Long empresaId, int page, int size) {
+    public PageDto<CotacaoDto> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Cotacao> cotacoes = repository.findAllByEmpresaId(empresaId, pageable);
+        Page<Cotacao> cotacoes = repository.findAllByEmpresaId(
+                ContextUtil.getUser().getEmpresa().getId(), pageable);
         Page<CotacaoDto> cotacoesDto = convertToListDto(cotacoes);
         return convertToPageDto(cotacoesDto);
     }
